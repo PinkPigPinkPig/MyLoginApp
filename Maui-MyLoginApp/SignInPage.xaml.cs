@@ -23,6 +23,7 @@ public partial class SignInPage : ContentPage
         if(username == null || password == null)
         {
             DisplayAlert("Warning", "Please input username & password", "OK");
+            return;
         }
         var data = await _loginRepository.Login(username, password);
         if (data != null)

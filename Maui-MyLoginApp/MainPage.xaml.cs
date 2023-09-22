@@ -1,25 +1,35 @@
-﻿namespace Maui_MyLoginApp;
+﻿using Maui_MyLoginApp.Models;
+using Maui_MyLoginApp.Services;
+
+namespace Maui_MyLoginApp;
 
 public partial class MainPage : ContentPage
 {
 	int count = 0;
+	readonly IUserRepository _userRepository = new UserService();
 
 	public MainPage()
 	{
 		InitializeComponent();
 	}
 
-	private void OnCounterClicked(object sender, EventArgs e)
+	private async void OnCounterClicked(object sender, EventArgs e)
 	{
-		count++;
+        List<User> data = await _userRepository.GetAllUser();
+        if (data != null)
+        {
+            listUsers.ItemsSource = data;
+        }
+    }
 
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
+    void signOut_Clicked(System.Object sender, System.EventArgs e)
+    {
+		Shell.Current.GoToAsync("//SignIn");
+    }
 
-		SemanticScreenReader.Announce(CounterBtn.Text);
-	}
+    void listUsers_ItemSelected(System.Object sender, Microsoft.Maui.Controls.SelectedItemChangedEventArgs e)
+    {
+    }
 }
 
 
